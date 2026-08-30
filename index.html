@@ -1,313 +1,70 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#071014">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Road Horizon</title>
-<style>
-:root{--bg:#071014;--panel:#0d1a20;--line:#20363d;--text:#f6f8f9;--muted:#8fa1a7;--green:#69ee45;--gold:#ffc400}
-*{box-sizing:border-box}html,body{margin:0;background:#020608;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-body{min-height:100vh}.app{max-width:430px;min-height:100vh;margin:auto;background:radial-gradient(circle at 50% -10%,#19353d 0,#071014 44%,#030708 100%)}
-header{position:sticky;top:0;z-index:8;padding:calc(14px + env(safe-area-inset-top)) 17px 10px;background:rgba(7,16,20,.9);backdrop-filter:blur(14px);display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:22px;font-weight:950;font-style:italic;line-height:.8}.logo span{display:block;color:var(--gold)}
-button{font:inherit;color:inherit;border:0}.pill,.outline{border:1px solid var(--line);background:transparent;border-radius:999px;padding:8px 11px}.pill{font-size:11px;color:var(--gold);font-weight:800}
-main{padding:8px 16px 96px}.screen{display:none}.screen.active{display:block}h1{font-size:29px;margin:10px 0 3px}.sub{font-size:13px;color:var(--muted)}
-.hero{padding:18px 2px}.percent{font-size:60px;font-weight:900;letter-spacing:-3px;margin:12px 0 5px}.bar,.mini{background:#1a2c31;border-radius:10px;overflow:hidden}.bar{height:9px}.mini{height:7px}.bar i,.mini i{display:block;height:100%;background:var(--green);border-radius:10px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.card,.item{background:linear-gradient(145deg,#102229,#0a161b);border:1px solid var(--line);border-radius:15px}.card{padding:14px}.item{padding:13px;margin:8px 0}.stat{font-size:22px;font-weight:900}.label{font-size:10px;color:var(--muted);margin-top:4px}.section{margin:19px 0 9px;color:var(--gold);font-size:11px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.item b{display:block}.item small{display:block;color:var(--muted);margin-top:3px}
-.primary,.danger,.gold{width:100%;padding:14px;border-radius:13px;font-weight:900;margin-top:12px}.primary{background:var(--green);color:#061207}.danger{background:#ff4938}.gold{background:var(--gold);color:#191200}
-.map{height:505px;position:relative;border:1px solid var(--line);border-radius:19px;overflow:hidden;background:#10252b;margin-top:14px}.map svg{width:100%;height:100%}.greyroad{stroke:#64757b;stroke-width:5;fill:none;opacity:.6}.done{stroke:var(--green);stroke-width:6;fill:none}.partial{stroke:var(--gold);stroke-width:6;fill:none}.maptag,.legend{position:absolute;background:rgba(4,10,12,.88);border:1px solid var(--line);border-radius:11px}.maptag{top:11px;left:11px;padding:9px;font-size:11px}.legend{bottom:11px;left:11px;right:11px;padding:9px;display:flex;justify-content:space-around;color:var(--muted);font-size:9px}
-.drive{text-align:center;padding-top:20px}.switch{display:flex;background:#0d1a20;border:1px solid var(--line);border-radius:12px;padding:4px;margin:12px 0}.switch button{flex:1;padding:9px;background:transparent;color:var(--muted);border-radius:9px}.switch .sel{background:#1b3037;color:#fff}.mode{color:var(--green);font-size:12px;font-weight:900;letter-spacing:1.5px}.ring{width:250px;height:250px;margin:18px auto;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle,#071014 0 64%,transparent 65%),conic-gradient(var(--green) 0 74%,#193038 74%)}.time{font-size:35px;font-weight:900}
-.badge{display:flex;align-items:center;gap:12px}.badgeicon{width:47px;height:47px;flex:0 0 47px;border-radius:14px;display:grid;place-items:center;background:#14291e;border:1px solid #315e33;font-size:23px}.locked{opacity:.45}
-.avatar{width:86px;height:86px;border:2px solid var(--gold);border-radius:50%;display:grid;place-items:center;margin:15px auto 7px;font-size:31px;background:#122229}.center{text-align:center}
-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:grid;grid-template-columns:repeat(6,1fr);background:rgba(5,12,15,.97);border-top:1px solid var(--line);padding:7px 3px calc(7px + env(safe-area-inset-bottom));z-index:10}nav button{background:none;color:#708187;font-size:9px;padding:4px 0}nav button.active{color:var(--green)}.ico{font-size:18px;display:block;margin-bottom:2px}
-.modal{display:none;position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.72);align-items:flex-end}.modal.show{display:flex}.sheet{width:100%;max-width:430px;margin:auto;background:#091419;border:1px solid var(--line);border-radius:24px 24px 0 0;padding:20px 17px calc(24px + env(safe-area-inset-bottom))}.prices{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.price{padding:11px 5px;text-align:center;border:1px solid var(--line);border-radius:12px}.price.best{border-color:var(--gold)}.price small{display:block;color:var(--muted);font-size:10px}.toast{position:fixed;z-index:40;bottom:88px;left:50%;transform:translate(-50%,140px);width:calc(100% - 30px);max-width:400px;background:#10252b;border:1px solid #2d5059;border-radius:13px;padding:12px;text-align:center;transition:.25s}.toast.show{transform:translate(-50%,0)}
-
-.realmap{height:505px;position:relative;border:1px solid var(--line);border-radius:19px;overflow:hidden;background:#081419;margin-top:14px}
-.realmap svg{width:100%;height:100%;display:block}
-.roadbase{stroke:#4f6268;stroke-width:1.4;fill:none;stroke-linecap:round;opacity:.48}
-.roaddriven{stroke:var(--green);stroke-width:3.3;fill:none;stroke-linecap:round}
-.roadcurrent{stroke:var(--gold);stroke-width:3.1;fill:none;stroke-linecap:round}
-.mapstatus{position:absolute;top:10px;left:10px;right:10px;padding:9px 10px;background:rgba(4,10,12,.9);border:1px solid var(--line);border-radius:11px;font-size:10px;z-index:2}
-.mapattrib{position:absolute;bottom:7px;right:8px;font-size:8px;color:#a9b7bb;background:rgba(3,8,10,.78);padding:4px 6px;border-radius:6px}
-.liveRoad{font-size:16px;font-weight:900;color:var(--gold)}
-
-</style>
-
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png">
-<meta name="apple-mobile-web-app-title" content="Road Horizon">
-<meta name="mobile-web-app-capable" content="yes">
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#07120f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Road Horizon">
+  <title>Road Horizon</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body><div class="app">
-<header><div class="logo">ROAD<span>HORIZON</span></div><button class="pill" onclick="openPro()">⭐ PRO</button></header>
-<main>
-<section id="home" class="screen active">
-<div class="hero"><div class="sub">GREAT BRITAIN</div><div class="percent">24.7%</div><div class="sub">ROAD COMPLETION</div><div class="bar" style="margin-top:14px"><i style="width:24.7%"></i></div></div>
-<div class="grid"><div class="card"><div class="stat">4,821</div><div class="label">ROADS COMPLETED</div></div><div class="card"><div class="stat">18</div><div class="label">COUNTIES</div></div><div class="card"><div class="stat">32,481</div><div class="label">MILES</div></div><div class="card"><div class="stat">27</div><div class="label">ACHIEVEMENTS</div></div></div>
-<div class="section">Continue your journey</div><div class="item"><div class="row"><div><b>Closest unfinished road</b><small>B3046 · 3.2 miles away</small></div><button class="outline" onclick="toast('Road Hunter will guide you to unfinished roads.')">GO →</button></div></div>
-<div class="item"><div class="row"><div><b>Hampshire</b><small>County progress</small></div><b>67%</b></div><div class="mini"><i style="width:67%"></i></div></div>
-<div class="section">Launch exclusive</div><div class="item" style="border-color:#725a15"><b>⭐ Founding Explorer</b><small>Permanent badge for Lifetime Pro members who join during launch.</small><button class="gold" onclick="openPro()">VIEW LAUNCH OFFER</button></div>
-</section>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div><p class="eyebrow">Bordon test area</p><h1>Road Horizon</h1></div>
+      <span id="gps-pill" class="pill">GPS idle</span>
+    </header>
 
-<section id="map" class="screen">
-<div class="row"><div><h1>Bordon Map</h1><div class="sub">Live road-completion alpha · 6 km test area</div></div><span id="bordonPctChip" class="pill">LOADING…</span></div>
-<div class="realmap">
-  <div id="mapstatus" class="mapstatus">Loading Bordon road network…</div>
-  <svg id="roadsvg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
-  <div class="legend"><span>🟢 Driven</span><span>🟡 This drive</span><span>⚪ Undriven</span></div>
-  <div class="mapattrib">© OpenStreetMap contributors · ODbL</div>
-</div>
-<div class="grid" style="margin-top:10px">
-  <div class="card"><div id="bordonPct" class="stat">—</div><div class="label">BORDON COMPLETE</div></div>
-  <div class="card"><div id="bordonRoads" class="stat">—</div><div class="label">ROADS DISCOVERED</div></div>
-</div>
-<div class="item"><div class="row"><div><b>Test area</b><small>Bordon, Hampshire · 6 km radius</small></div><button class="outline" onclick="loadRoadNetwork(true)">REFRESH</button></div></div>
-</section>
+    <section id="map-view" class="view active" aria-labelledby="map-title">
+      <div class="map-heading">
+        <div><h2 id="map-title">Your road map</h2><p id="map-status">Ready to locate you</p></div>
+        <button id="locate-button" class="icon-button" type="button" aria-label="Centre map on my location" title="Centre on me">⌖</button>
+      </div>
+      <div id="map" aria-label="Interactive map of Bordon showing your current position and completed roads"></div>
+      <div class="map-key" aria-label="Map legend"><span><i class="key-line complete"></i>Completed</span><span><i class="key-line available"></i>Available</span><span><i class="key-dot"></i>You</span></div>
+      <div class="stats-grid">
+        <article><span>Bordon complete</span><strong id="completion">0.0%</strong></article>
+        <article><span>Road segments</span><strong id="segment-count">—</strong></article>
+        <article><span>GPS accuracy</span><strong id="map-accuracy">—</strong></article>
+      </div>
+    </section>
 
-<section id="drive" class="screen"><div class="drive"><div id="modeLabel" class="mode">CAR MODE</div><div class="switch"><button id="car" class="sel" onclick="setMode('car')">🚗 Car</button><button id="bike" onclick="setMode('bike')">🏍️ Bike</button></div><div class="ring"><div><div id="timer" class="time">00:00:00</div><div class="sub">DRIVE TIME</div></div></div>
-<div class="grid"><div class="card"><div id="miles" class="stat">0.0</div><div class="label">MILES</div></div><div class="card"><div id="newroads" class="stat">0</div><div class="label">NEW ROADS</div></div></div>
-<div class="item"><b id="drivecopy">Ready to track your next journey.</b><small>Uses your device GPS while this app is open. Road matching comes in the next build.</small></div>
-<div class="item">
-  <div class="row"><div><b>GPS status</b><small id="gpsstatus">Not started</small></div><b id="accuracy">—</b></div>
-</div>
-<div class="item">
-  <div><b>Matched road</b><small id="matchstatus">Waiting for GPS…</small></div>
-  <div id="matchedroad" class="liveRoad" style="margin-top:6px">—</div>
-</div>
-<div class="item">
-  <div class="row"><div><b>Location points</b><small>Recorded on this drive</small></div><b id="pointcount">0</b></div>
-</div>
-<button id="drivebtn" class="primary" onclick="toggleDrive()">START DRIVE</button></div></section>
+    <section id="drive-view" class="view" aria-labelledby="drive-title">
+      <p class="eyebrow">Live journey</p><h2 id="drive-title">Drive</h2>
+      <div class="mode-switch" role="group" aria-label="Journey type">
+        <button type="button" class="mode active" data-mode="car">Car</button><button type="button" class="mode" data-mode="bike">Bike</button>
+      </div>
+      <div class="drive-orb"><span id="drive-state">Ready</span><strong id="distance">0.00</strong><small>miles</small></div>
+      <div class="drive-details">
+        <div><span>Matched road</span><strong id="matched-road">—</strong></div>
+        <div><span>GPS</span><strong id="drive-accuracy">—</strong></div>
+        <div><span>New roads</span><strong id="new-roads">0</strong></div>
+        <div><span>GPS points</span><strong id="point-count">0</strong></div>
+      </div>
+      <button id="drive-button" class="primary-button" type="button">Start drive</button>
+      <p class="note">Keep Road Horizon open while tracking. iOS may pause web GPS when the screen locks.</p>
+    </section>
 
-<section id="progress" class="screen"><h1>Progress</h1><div class="sub">Great Britain → country → region → county → road.</div><div class="section">Countries</div>
-<div class="item"><div class="row"><b>England</b><b>26.1%</b></div><div class="mini"><i style="width:26.1%"></i></div></div><div class="item"><div class="row"><b>Scotland</b><b>18.4%</b></div><div class="mini"><i style="width:18.4%"></i></div></div><div class="item"><div class="row"><b>Wales</b><b>21.7%</b></div><div class="mini"><i style="width:21.7%"></i></div></div>
-<div class="section">Regions</div><div id="regions"></div></section>
+    <section id="progress-view" class="view" aria-labelledby="progress-title">
+      <p class="eyebrow">Stored on this device</p><h2 id="progress-title">Progress</h2>
+      <div class="progress-card"><span>Local completion</span><strong id="progress-completion">0.0%</strong><div class="progress-track"><i id="progress-fill"></i></div></div>
+      <h3>Recent journeys</h3><div id="journey-list" class="journey-list"><p class="empty">No journeys recorded yet.</p></div>
+    </section>
+  </main>
 
-<section id="achievements" class="screen"><h1>Achievements</h1><div class="sub">Turn miles into milestones.</div>
-<div class="item badge"><div class="badgeicon">🚗</div><div><b>First Drive</b><small>Complete your first road · ✓</small></div></div>
-<div class="item badge"><div class="badgeicon">💯</div><div><b>Century</b><small>Drive 100 unique miles · ✓</small></div></div>
-<div class="item badge"><div class="badgeicon">🗺️</div><div><b>County Collector</b><small>Complete your first county · ✓</small></div></div>
-<div class="item badge locked"><div class="badgeicon">🏆</div><div><b>Halfway There</b><small>Reach 50% Great Britain</small></div></div>
-<div class="item badge locked"><div class="badgeicon">🌄</div><div><b>The Horizon</b><small>Reach 100% Great Britain</small></div></div>
-<div class="item badge"><div class="badgeicon">⭐</div><div><b>Founding Explorer</b><small>Exclusive Lifetime Pro launch badge</small></div></div></section>
-
-<section id="profile" class="screen"><div class="center"><div class="avatar">J</div><h1>JACK</h1><div class="sub">ROAD HORIZON · LEVEL 27</div><p><span class="pill">⭐ FOUNDING EXPLORER</span></p></div>
-<div class="grid"><div class="card"><div class="stat">24.7%</div><div class="label">GB COMPLETE</div></div><div class="card"><div class="stat">612h</div><div class="label">DRIVING TIME</div></div><div class="card"><div class="stat">4,821</div><div class="label">ROADS</div></div><div class="card"><div class="stat">18</div><div class="label">COUNTIES</div></div></div>
-<div class="section">Account</div><div class="item" onclick="openPro()"><b>⭐ Road Horizon Pro</b><small>Plans, Road Hunter and advanced progress</small></div><div class="item"><b>GPX imports</b><small>Bring historical journeys into Road Horizon</small></div><div class="item"><b>Bordon Road Matching Alpha</b><small>Road data © OpenStreetMap contributors, available under ODbL.</small></div><div class="item"><b>Privacy & Data</b><small>Your routes are yours</small></div></section>
-</main>
-
-<nav><button class="active" data-go="home"><span class="ico">⌂</span>Home</button><button data-go="map"><span class="ico">◈</span>Map</button><button data-go="drive"><span class="ico">◉</span>Drive</button><button data-go="progress"><span class="ico">▥</span>Progress</button><button data-go="achievements"><span class="ico">♜</span>Awards</button><button data-go="profile"><span class="ico">●</span>Profile</button></nav>
-
-<div id="promodal" class="modal" onclick="if(event.target===this)closePro()"><div class="sheet"><div class="row"><div><h1 style="margin:0">Road Horizon Pro</h1><div class="sub">Go further. Complete more.</div></div><button class="outline" onclick="closePro()">✕</button></div><div class="section">Pro features</div><div class="item">🗺️ Detailed road progress<br>🔎 Nearby unfinished roads<br>🧭 Road Hunter & completion drives<br>📥 GPX import<br>☁️ Cloud backup<br>🏆 Full achievements & advanced stats</div><div class="prices"><div class="price"><b>£4.99</b><small>MONTHLY</small></div><div class="price best"><b>£39.99</b><small>YEARLY · BEST</small></div><div class="price"><b>£79.99</b><small>LIFETIME</small></div></div><div class="item" style="border-color:#725a15"><b>⭐ Founding Explorer</b><small>Buy Lifetime Pro during launch and keep this exclusive badge permanently.</small></div><button class="gold" onclick="closePro();toast('Prototype only — no payment will be taken.')">GET LIFETIME PRO · £79.99</button></div></div>
-<div id="toast" class="toast"></div>
-</div>
-<script>
-const screens=[...document.querySelectorAll('.screen')], nav=[...document.querySelectorAll('nav button')];
-nav.forEach(b=>b.onclick=()=>{screens.forEach(s=>s.classList.remove('active'));document.getElementById(b.dataset.go).classList.add('active');nav.forEach(n=>n.classList.remove('active'));b.classList.add('active')});
-const regions=[['South East',42.3],['South West',31.8],['London',78.4],['East of England',27.1],['West Midlands',21.6],['East Midlands',18.7],['North West',15.4],['Yorkshire & Humber',13.2],['North East',9.8]];
-document.getElementById('regions').innerHTML=regions.map(x=>`<div class="item"><div class="row"><b>${x[0]}</b><b>${x[1]}%</b></div><div class="mini"><i style="width:${x[1]}%"></i></div></div>`).join('');
-let mode='car',running=false,seconds=0,tick,watchId=null;
-let drivePoints=[], totalMiles=0, lastPoint=null, startedAt=null;
-
-// ---------- Bordon road-matching alpha ----------
-const BORDON={lat:51.1136,lon:-0.8622,radius:6000};
-let roadSegments=[], roadGrid=new Map(), roadWays=new Map(), roadLoaded=false;
-let completedSegments=new Set(JSON.parse(localStorage.getItem('rh_bordon_completed_segments')||'[]'));
-let currentDriveSegments=new Set(), currentDriveRoads=new Set();
-const GRID=0.002;
-
-function setMode(m){
-  mode=m;
-  car.classList.toggle('sel',m==='car');
-  bike.classList.toggle('sel',m==='bike');
-  modeLabel.textContent=m==='bike'?'BIKE MODE':'CAR MODE';
-  drivecopy.textContent=m==='bike'
-    ?'Rider mode ready — GPS will match your ride to Bordon roads.'
-    :'Ready to match your next journey to Bordon roads.';
-}
-function haversineMiles(a,b){
-  const R=3958.7613,toRad=x=>x*Math.PI/180;
-  const dLat=toRad(b.lat-a.lat),dLon=toRad(b.lon-a.lon);
-  const lat1=toRad(a.lat),lat2=toRad(b.lat);
-  const h=Math.sin(dLat/2)**2+Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLon/2)**2;
-  return 2*R*Math.asin(Math.sqrt(h));
-}
-function haversineMeters(a,b){return haversineMiles(a,b)*1609.344}
-function fmtTime(s){return [Math.floor(s/3600),Math.floor(s/60)%60,s%60].map(v=>String(v).padStart(2,'0')).join(':')}
-function gridKey(lat,lon){return Math.floor(lat/GRID)+','+Math.floor(lon/GRID)}
-function addGrid(seg){
-  const minLat=Math.min(seg.a.lat,seg.b.lat),maxLat=Math.max(seg.a.lat,seg.b.lat);
-  const minLon=Math.min(seg.a.lon,seg.b.lon),maxLon=Math.max(seg.a.lon,seg.b.lon);
-  for(let i=Math.floor(minLat/GRID);i<=Math.floor(maxLat/GRID);i++){
-    for(let j=Math.floor(minLon/GRID);j<=Math.floor(maxLon/GRID);j++){
-      const k=i+','+j;if(!roadGrid.has(k))roadGrid.set(k,[]);roadGrid.get(k).push(seg);
-    }
-  }
-}
-function pointSegDistanceMeters(p,a,b){
-  const lat0=p.lat*Math.PI/180;
-  const x=(q)=>({x:(q.lon-p.lon)*111320*Math.cos(lat0),y:(q.lat-p.lat)*110540});
-  const A=x(a),B=x(b),vx=B.x-A.x,vy=B.y-A.y;
-  const denom=vx*vx+vy*vy;
-  let t=denom?(-(A.x*vx+A.y*vy))/denom:0;t=Math.max(0,Math.min(1,t));
-  const dx=A.x+t*vx,dy=A.y+t*vy;return Math.sqrt(dx*dx+dy*dy);
-}
-function nearestSegment(p){
-  const i=Math.floor(p.lat/GRID),j=Math.floor(p.lon/GRID),cands=[];
-  for(let di=-1;di<=1;di++)for(let dj=-1;dj<=1;dj++){
-    const arr=roadGrid.get((i+di)+','+(j+dj));if(arr)cands.push(...arr);
-  }
-  let best=null,bestD=1e9;
-  for(const s of cands){const d=pointSegDistanceMeters(p,s.a,s.b);if(d<bestD){bestD=d;best=s}}
-  const threshold=Math.max(22,Math.min(45,(p.accuracy||15)*1.3));
-  return bestD<=threshold?{seg:best,d:bestD}:null;
-}
-function roadLabel(seg){
-  const w=roadWays.get(seg.wayId)||{};
-  return w.ref || w.name || 'Unnamed road';
-}
-function saveCompletion(){
-  localStorage.setItem('rh_bordon_completed_segments',JSON.stringify([...completedSegments]));
-}
-function updateCompletionUI(){
-  if(!roadSegments.length)return;
-  let total=0,done=0;const roads=new Set();
-  roadSegments.forEach(s=>{total+=s.len;if(completedSegments.has(s.id)){done+=s.len;roads.add(s.wayId)}});
-  const pct=total?done/total*100:0;
-  if(document.getElementById('bordonPct'))bordonPct.textContent=pct.toFixed(2)+'%';
-  if(document.getElementById('bordonPctChip'))bordonPctChip.textContent=pct.toFixed(2)+'%';
-  if(document.getElementById('bordonRoads'))bordonRoads.textContent=roads.size;
-}
-function renderRoadMap(){
-  const svg=document.getElementById('roadsvg');if(!svg||!roadSegments.length)return;
-  const minLat=BORDON.lat-0.055,maxLat=BORDON.lat+0.055,minLon=BORDON.lon-0.09,maxLon=BORDON.lon+0.09;
-  const xy=p=>[(p.lon-minLon)/(maxLon-minLon)*1000,(maxLat-p.lat)/(maxLat-minLat)*1000];
-  const base=[],done=[],current=[];
-  for(const s of roadSegments){
-    const [x1,y1]=xy(s.a),[x2,y2]=xy(s.b);
-    const el=`<path d="M${x1.toFixed(1)} ${y1.toFixed(1)}L${x2.toFixed(1)} ${y2.toFixed(1)}"/>`;
-    if(currentDriveSegments.has(s.id))current.push(el);
-    else if(completedSegments.has(s.id))done.push(el);else base.push(el);
-  }
-  svg.innerHTML=`<g class="roadbase">${base.join('')}</g><g class="roaddriven">${done.join('')}</g><g class="roadcurrent">${current.join('')}</g>`;
-}
-async function loadRoadNetwork(force=false){
-  const status=document.getElementById('mapstatus');
-  if(roadLoaded&&!force)return;
-  if(status)status.textContent='Loading Bordon road network…';
-  try{
-    let data=null;
-    if(!force){
-      const cached=localStorage.getItem('rh_bordon_osm_cache');
-      if(cached) data=JSON.parse(cached);
-    }
-    if(!data){
-      const q=`[out:json][timeout:30];way(around:${BORDON.radius},${BORDON.lat},${BORDON.lon})["highway"~"^(motorway|trunk|primary|secondary|tertiary|unclassified|residential|living_street|service)$"];(._;>;);out body;`;
-      const endpoints=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter'];
-      let lastErr;
-      for(const ep of endpoints){
-        try{
-          const r=await fetch(ep,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:'data='+encodeURIComponent(q)});
-          if(!r.ok)throw new Error('HTTP '+r.status);data=await r.json();break;
-        }catch(e){lastErr=e}
-      }
-      if(!data)throw lastErr||new Error('No Overpass response');
-      try{localStorage.setItem('rh_bordon_osm_cache',JSON.stringify(data))}catch(e){}
-    }
-    const nodes=new Map();
-    data.elements.filter(e=>e.type==='node').forEach(n=>nodes.set(n.id,{lat:n.lat,lon:n.lon}));
-    roadSegments=[];roadGrid.clear();roadWays.clear();
-    const ways=data.elements.filter(e=>e.type==='way');
-    ways.forEach(w=>{
-      roadWays.set(w.id,{name:w.tags?.name||'',ref:w.tags?.ref||'',highway:w.tags?.highway||''});
-      for(let i=0;i<w.nodes.length-1;i++){
-        const a=nodes.get(w.nodes[i]),b=nodes.get(w.nodes[i+1]);if(!a||!b)continue;
-        const s={id:w.id+':'+i,wayId:w.id,a,b,len:haversineMeters(a,b)};
-        roadSegments.push(s);addGrid(s);
-      }
-    });
-    roadLoaded=true;
-    if(status)status.textContent=`Bordon network ready · ${ways.length.toLocaleString()} roads/ways · ${roadSegments.length.toLocaleString()} segments`;
-    updateCompletionUI();renderRoadMap();
-  }catch(e){
-    if(status)status.textContent='Could not load road data. Tap REFRESH when online.';
-    console.error(e);toast('Road network failed to load. Check your internet connection.');
-  }
-}
-
-function gpsSuccess(pos){
-  const p={lat:pos.coords.latitude,lon:pos.coords.longitude,accuracy:pos.coords.accuracy,speed:pos.coords.speed,time:pos.timestamp};
-  gpsstatus.textContent='GPS locked';accuracy.textContent='±'+Math.round(p.accuracy)+' m';
-  if(p.accuracy>80)return;
-  if(lastPoint){
-    const d=haversineMiles(lastPoint,p),dt=Math.max(1,(p.time-lastPoint.time)/1000),mph=d/(dt/3600);
-    if(d>0.001&&mph<130)totalMiles+=d;
-  }
-  drivePoints.push(p);lastPoint=p;miles.textContent=totalMiles.toFixed(2);pointcount.textContent=drivePoints.length;
-
-  if(roadLoaded){
-    const m=nearestSegment(p);
-    if(m){
-      const s=m.seg,label=roadLabel(s);
-      matchedroad.textContent=label;matchstatus.textContent=`Matched within ${Math.round(m.d)} m`;
-      const wasNew=!completedSegments.has(s.id);
-      currentDriveSegments.add(s.id);completedSegments.add(s.id);currentDriveRoads.add(s.wayId);
-      if(wasNew){saveCompletion();updateCompletionUI();renderRoadMap()}
-      newroads.textContent=currentDriveRoads.size;
-    }else{
-      matchedroad.textContent='—';matchstatus.textContent='No road match nearby';
-    }
-  }else{
-    matchedroad.textContent='Loading roads…';matchstatus.textContent='Road network not ready';
-  }
-}
-function gpsError(err){
-  const msgs={1:'Location permission denied',2:'Location unavailable',3:'GPS timed out'};
-  gpsstatus.textContent=msgs[err.code]||'GPS error';accuracy.textContent='!';
-  if(err.code===1)toast('Allow location access for Road Horizon, then try again.');
-}
-function saveDrive(){
-  const drive={id:Date.now(),mode,startedAt,endedAt:new Date().toISOString(),seconds,miles:Number(totalMiles.toFixed(3)),points:drivePoints,roadWays:[...currentDriveRoads],segments:[...currentDriveSegments]};
-  const history=JSON.parse(localStorage.getItem('rh_drive_history')||'[]');history.unshift(drive);
-  localStorage.setItem('rh_drive_history',JSON.stringify(history.slice(0,50)));
-}
-function startGps(){
-  if(!('geolocation'in navigator)){gpsstatus.textContent='GPS not supported';toast('This device/browser does not provide GPS access.');running=false;return false}
-  gpsstatus.textContent='Requesting location…';
-  watchId=navigator.geolocation.watchPosition(gpsSuccess,gpsError,{enableHighAccuracy:true,maximumAge:1000,timeout:15000});
-  return true;
-}
-async function toggleDrive(){
-  if(!running){
-    if(!roadLoaded)await loadRoadNetwork();
-    running=true;seconds=0;totalMiles=0;drivePoints=[];lastPoint=null;currentDriveSegments.clear();currentDriveRoads.clear();startedAt=new Date().toISOString();
-    timer.textContent='00:00:00';miles.textContent='0.00';newroads.textContent='0';pointcount.textContent='0';matchedroad.textContent='—';matchstatus.textContent='Waiting for first road match…';
-    if(!startGps()){running=false;return}
-    drivebtn.textContent='STOP DRIVE';drivebtn.className='danger';toast(mode==='bike'?'🏍️ Bordon bike tracking started':'🚗 Bordon road matching started');
-    tick=setInterval(()=>{seconds++;timer.textContent=fmtTime(seconds)},1000);
-  }else{
-    running=false;clearInterval(tick);if(watchId!==null){navigator.geolocation.clearWatch(watchId);watchId=null}
-    gpsstatus.textContent='Drive stopped';accuracy.textContent='—';drivebtn.textContent='START DRIVE';drivebtn.className='primary';
-    currentDriveSegments.forEach(id=>completedSegments.add(id));saveCompletion();renderRoadMap();updateCompletionUI();
-    if(drivePoints.length){saveDrive();toast(`🎉 ${totalMiles.toFixed(2)} mi · ${currentDriveRoads.size} matched roads · Bordon progress saved`)}
-    else toast('Drive stopped. No usable GPS points were recorded.');
-  }
-}
-window.addEventListener('load',()=>loadRoadNetwork(false));
-
-function openPro(){promodal.classList.add('show')}function closePro(){promodal.classList.remove('show')}function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2700)}
-</script>
-
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(console.error);
-  });
-}
-</script>
-
-</body></html>
+  <nav class="bottom-nav" aria-label="Main navigation">
+    <button class="nav-button active" data-view="map-view" type="button"><span>⌖</span>Map</button>
+    <button class="nav-button" data-view="drive-view" type="button"><span>●</span>Drive</button>
+    <button class="nav-button" data-view="progress-view" type="button"><span>↗</span>Progress</button>
+  </nav>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="app.js"></script>
+</body>
+</html>
