@@ -25,6 +25,12 @@ main{padding:8px 16px 96px}.screen{display:none}.screen.active{display:block}h1{
 nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:grid;grid-template-columns:repeat(6,1fr);background:rgba(5,12,15,.97);border-top:1px solid var(--line);padding:7px 3px calc(7px + env(safe-area-inset-bottom));z-index:10}nav button{background:none;color:#708187;font-size:9px;padding:4px 0}nav button.active{color:var(--green)}.ico{font-size:18px;display:block;margin-bottom:2px}
 .modal{display:none;position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.72);align-items:flex-end}.modal.show{display:flex}.sheet{width:100%;max-width:430px;margin:auto;background:#091419;border:1px solid var(--line);border-radius:24px 24px 0 0;padding:20px 17px calc(24px + env(safe-area-inset-bottom))}.prices{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.price{padding:11px 5px;text-align:center;border:1px solid var(--line);border-radius:12px}.price.best{border-color:var(--gold)}.price small{display:block;color:var(--muted);font-size:10px}.toast{position:fixed;z-index:40;bottom:88px;left:50%;transform:translate(-50%,140px);width:calc(100% - 30px);max-width:400px;background:#10252b;border:1px solid #2d5059;border-radius:13px;padding:12px;text-align:center;transition:.25s}.toast.show{transform:translate(-50%,0)}
 </style>
+
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Road Horizon">
+<meta name="mobile-web-app-capable" content="yes">
+
 </head>
 <body><div class="app">
 <header><div class="logo">ROAD<span>HORIZON</span></div><button class="pill" onclick="openPro()">⭐ PRO</button></header>
@@ -84,4 +90,13 @@ function setMode(m){mode=m;car.classList.toggle('sel',m==='car');bike.classList.
 function toggleDrive(){running=!running;if(running){seconds=0;drivebtn.textContent='STOP DRIVE';drivebtn.className='danger';toast(mode==='bike'?'🏍️ Bike Mode tracking started':'🚗 Drive tracking started');tick=setInterval(()=>{seconds++;timer.textContent=[Math.floor(seconds/3600),Math.floor(seconds/60)%60,seconds%60].map(v=>String(v).padStart(2,'0')).join(':');miles.textContent=(seconds/80).toFixed(1);newroads.textContent=Math.floor(seconds/45)},1000)}else{clearInterval(tick);drivebtn.textContent='START DRIVE';drivebtn.className='primary';toast('🎉 Drive saved — your road progress has increased.')}}
 function openPro(){promodal.classList.add('show')}function closePro(){promodal.classList.remove('show')}function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2700)}
 </script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(console.error);
+  });
+}
+</script>
+
 </body></html>
