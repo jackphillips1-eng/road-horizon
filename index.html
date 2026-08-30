@@ -56,7 +56,14 @@ nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-w
 
 <section id="drive" class="screen"><div class="drive"><div id="modeLabel" class="mode">CAR MODE</div><div class="switch"><button id="car" class="sel" onclick="setMode('car')">🚗 Car</button><button id="bike" onclick="setMode('bike')">🏍️ Bike</button></div><div class="ring"><div><div id="timer" class="time">00:00:00</div><div class="sub">DRIVE TIME</div></div></div>
 <div class="grid"><div class="card"><div id="miles" class="stat">0.0</div><div class="label">MILES</div></div><div class="card"><div id="newroads" class="stat">0</div><div class="label">NEW ROADS</div></div></div>
-<div class="item"><b id="drivecopy">Ready to track your next journey.</b><small>This prototype simulates tracking. Production will use device GPS and road matching.</small></div><button id="drivebtn" class="primary" onclick="toggleDrive()">START DRIVE</button></div></section>
+<div class="item"><b id="drivecopy">Ready to track your next journey.</b><small>Uses your device GPS while this app is open. Road matching comes in the next build.</small></div>
+<div class="item">
+  <div class="row"><div><b>GPS status</b><small id="gpsstatus">Not started</small></div><b id="accuracy">—</b></div>
+</div>
+<div class="item">
+  <div class="row"><div><b>Location points</b><small>Recorded on this drive</small></div><b id="pointcount">0</b></div>
+</div>
+<button id="drivebtn" class="primary" onclick="toggleDrive()">START DRIVE</button></div></section>
 
 <section id="progress" class="screen"><h1>Progress</h1><div class="sub">Great Britain → country → region → county → road.</div><div class="section">Countries</div>
 <div class="item"><div class="row"><b>England</b><b>26.1%</b></div><div class="mini"><i style="width:26.1%"></i></div></div><div class="item"><div class="row"><b>Scotland</b><b>18.4%</b></div><div class="mini"><i style="width:18.4%"></i></div></div><div class="item"><div class="row"><b>Wales</b><b>21.7%</b></div><div class="mini"><i style="width:21.7%"></i></div></div>
@@ -85,9 +92,161 @@ const screens=[...document.querySelectorAll('.screen')], nav=[...document.queryS
 nav.forEach(b=>b.onclick=()=>{screens.forEach(s=>s.classList.remove('active'));document.getElementById(b.dataset.go).classList.add('active');nav.forEach(n=>n.classList.remove('active'));b.classList.add('active')});
 const regions=[['South East',42.3],['South West',31.8],['London',78.4],['East of England',27.1],['West Midlands',21.6],['East Midlands',18.7],['North West',15.4],['Yorkshire & Humber',13.2],['North East',9.8]];
 document.getElementById('regions').innerHTML=regions.map(x=>`<div class="item"><div class="row"><b>${x[0]}</b><b>${x[1]}%</b></div><div class="mini"><i style="width:${x[1]}%"></i></div></div>`).join('');
-let mode='car',running=false,seconds=0,tick;
-function setMode(m){mode=m;car.classList.toggle('sel',m==='car');bike.classList.toggle('sel',m==='bike');modeLabel.textContent=m==='bike'?'BIKE MODE':'CAR MODE';drivecopy.textContent=m==='bike'?'Rider mode ready — hunt twisty roads and new tarmac.':'Ready to track your next journey.'}
-function toggleDrive(){running=!running;if(running){seconds=0;drivebtn.textContent='STOP DRIVE';drivebtn.className='danger';toast(mode==='bike'?'🏍️ Bike Mode tracking started':'🚗 Drive tracking started');tick=setInterval(()=>{seconds++;timer.textContent=[Math.floor(seconds/3600),Math.floor(seconds/60)%60,seconds%60].map(v=>String(v).padStart(2,'0')).join(':');miles.textContent=(seconds/80).toFixed(1);newroads.textContent=Math.floor(seconds/45)},1000)}else{clearInterval(tick);drivebtn.textContent='START DRIVE';drivebtn.className='primary';toast('🎉 Drive saved — your road progress has increased.')}}
+let mode='car',running=false,seconds=0,tick,watchId=null;
+let drivePoints=[], totalMiles=0, lastPoint=null, startedAt=null;
+
+function setMode(m){
+  mode=m;
+  car.classList.toggle('sel',m==='car');
+  bike.classList.toggle('sel',m==='bike');
+  modeLabel.textContent=m==='bike'?'BIKE MODE':'CAR MODE';
+  drivecopy.textContent=m==='bike'
+    ?'Rider mode ready — GPS will record your next ride.'
+    :'Ready to track your next journey.';
+}
+
+function haversineMiles(a,b){
+  const R=3958.7613, toRad=x=>x*Math.PI/180;
+  const dLat=toRad(b.lat-a.lat), dLon=toRad(b.lon-a.lon);
+  const lat1=toRad(a.lat), lat2=toRad(b.lat);
+  const h=Math.sin(dLat/2)**2+Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.sqrt(h));
+}
+
+function fmtTime(s){
+  return [Math.floor(s/3600),Math.floor(s/60)%60,s%60]
+    .map(v=>String(v).padStart(2,'0')).join(':');
+}
+
+function gpsSuccess(pos){
+  const p={
+    lat:pos.coords.latitude,
+    lon:pos.coords.longitude,
+    accuracy:pos.coords.accuracy,
+    speed:pos.coords.speed,
+    time:pos.timestamp
+  };
+
+  gpsstatus.textContent='GPS locked';
+  accuracy.textContent='±'+Math.round(p.accuracy)+' m';
+
+  // Ignore very poor fixes and obvious jumps.
+  if(p.accuracy > 80) return;
+
+  if(lastPoint){
+    const d=haversineMiles(lastPoint,p);
+    const dt=Math.max(1,(p.time-lastPoint.time)/1000);
+    const mph=d/(dt/3600);
+
+    // Only count plausible movement; reject GPS spikes.
+    if(d > 0.001 && mph < 130){
+      totalMiles += d;
+    }
+  }
+
+  drivePoints.push(p);
+  lastPoint=p;
+  miles.textContent=totalMiles.toFixed(2);
+  pointcount.textContent=drivePoints.length;
+  newroads.textContent='—';
+}
+
+function gpsError(err){
+  const msgs={
+    1:'Location permission denied',
+    2:'Location unavailable',
+    3:'GPS timed out'
+  };
+  gpsstatus.textContent=msgs[err.code] || 'GPS error';
+  accuracy.textContent='!';
+  if(err.code===1){
+    toast('Allow location access for Road Horizon in Safari settings, then try again.');
+  }
+}
+
+function saveDrive(){
+  const drive={
+    id:Date.now(),
+    mode,
+    startedAt,
+    endedAt:new Date().toISOString(),
+    seconds,
+    miles:Number(totalMiles.toFixed(3)),
+    points:drivePoints
+  };
+  const history=JSON.parse(localStorage.getItem('rh_drive_history')||'[]');
+  history.unshift(drive);
+  localStorage.setItem('rh_drive_history',JSON.stringify(history.slice(0,50)));
+}
+
+function startGps(){
+  if(!('geolocation' in navigator)){
+    gpsstatus.textContent='GPS not supported';
+    toast('This device/browser does not provide GPS access.');
+    running=false;
+    return false;
+  }
+
+  gpsstatus.textContent='Requesting location…';
+  watchId=navigator.geolocation.watchPosition(
+    gpsSuccess,
+    gpsError,
+    {
+      enableHighAccuracy:true,
+      maximumAge:1000,
+      timeout:15000
+    }
+  );
+  return true;
+}
+
+function toggleDrive(){
+  if(!running){
+    running=true;
+    seconds=0;
+    totalMiles=0;
+    drivePoints=[];
+    lastPoint=null;
+    startedAt=new Date().toISOString();
+    timer.textContent='00:00:00';
+    miles.textContent='0.00';
+    newroads.textContent='—';
+    pointcount.textContent='0';
+
+    if(!startGps()){
+      running=false;
+      return;
+    }
+
+    drivebtn.textContent='STOP DRIVE';
+    drivebtn.className='danger';
+    toast(mode==='bike'?'🏍️ Bike GPS tracking started':'🚗 GPS tracking started');
+
+    tick=setInterval(()=>{
+      seconds++;
+      timer.textContent=fmtTime(seconds);
+    },1000);
+  }else{
+    running=false;
+    clearInterval(tick);
+    if(watchId!==null){
+      navigator.geolocation.clearWatch(watchId);
+      watchId=null;
+    }
+    gpsstatus.textContent='Drive stopped';
+    accuracy.textContent='—';
+    drivebtn.textContent='START DRIVE';
+    drivebtn.className='primary';
+
+    if(drivePoints.length){
+      saveDrive();
+      toast(`🎉 Drive saved · ${totalMiles.toFixed(2)} miles · ${drivePoints.length} GPS points`);
+    }else{
+      toast('Drive stopped. No usable GPS points were recorded.');
+    }
+  }
+}
+
 function openPro(){promodal.classList.add('show')}function closePro(){promodal.classList.remove('show')}function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2700)}
 </script>
 
