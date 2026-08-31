@@ -4,6 +4,9 @@ TEST AREA
 Bordon, Hampshire — approximately 6 km radius around the town centre.
 
 WHAT THIS BUILD DOES
+• Adds GPS-discovered landmark collectables to the Awards tab.
+• Starts with four meaningful Bordon-area places and eight major UK icons.
+• Saves collected landmarks on the device and displays them as pins on the map.
 • Displays an interactive Leaflet/OpenStreetMap map centred on your live GPS location.
 • Shows a live user-location marker and GPS accuracy circle.
 • Lets you pan, pinch-zoom and return to your location with the locate button.

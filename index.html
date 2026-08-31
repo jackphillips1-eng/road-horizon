@@ -21,6 +21,7 @@ main{padding:8px 16px 96px}.screen{display:none}.screen.active{display:block}h1{
 .map{height:505px;position:relative;border:1px solid var(--line);border-radius:19px;overflow:hidden;background:#10252b;margin-top:14px}.map svg{width:100%;height:100%}.greyroad{stroke:#64757b;stroke-width:5;fill:none;opacity:.6}.done{stroke:var(--green);stroke-width:6;fill:none}.partial{stroke:var(--gold);stroke-width:6;fill:none}.maptag,.legend{position:absolute;background:rgba(4,10,12,.88);border:1px solid var(--line);border-radius:11px}.maptag{top:11px;left:11px;padding:9px;font-size:11px}.legend{bottom:11px;left:11px;right:11px;padding:9px;display:flex;justify-content:space-around;color:var(--muted);font-size:9px}
 .drive{text-align:center;padding-top:20px}.switch{display:flex;background:#0d1a20;border:1px solid var(--line);border-radius:12px;padding:4px;margin:12px 0}.switch button{flex:1;padding:9px;background:transparent;color:var(--muted);border-radius:9px}.switch .sel{background:#1b3037;color:#fff}.mode{color:var(--green);font-size:12px;font-weight:900;letter-spacing:1.5px}.ring{width:250px;height:250px;margin:18px auto;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle,#071014 0 64%,transparent 65%),conic-gradient(var(--green) 0 74%,#193038 74%)}.time{font-size:35px;font-weight:900}
 .badge{display:flex;align-items:center;gap:12px}.badgeicon{width:47px;height:47px;flex:0 0 47px;border-radius:14px;display:grid;place-items:center;background:#14291e;border:1px solid #315e33;font-size:23px}.locked{opacity:.45}
+.awardtabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:4px;margin:16px 0 12px;border:1px solid var(--line);border-radius:13px;background:#091419}.awardtabs button{padding:10px 8px;border-radius:9px;background:transparent;color:var(--muted);font-size:11px;font-weight:900}.awardtabs button.sel{background:#1b3037;color:#fff}.awardpanel{display:none}.awardpanel.active{display:block}.collectionhero{padding:15px;border:1px solid #725a15;border-radius:16px;background:radial-gradient(circle at 90% 10%,rgba(255,196,0,.16),transparent 40%),linear-gradient(145deg,#17241f,#0a161b)}.collectioncount{font-size:34px;font-weight:950;color:var(--gold);letter-spacing:-1px}.collectionmeta{display:flex;justify-content:space-between;gap:8px;margin-top:7px;color:var(--muted);font-size:10px}.landmarkgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}.landmarkcard{position:relative;min-height:164px;padding:13px;border:1px solid var(--line);border-radius:15px;background:linear-gradient(145deg,#102229,#091419);overflow:hidden}.landmarkcard.collected{border-color:#6b5b20;background:radial-gradient(circle at 88% 8%,rgba(255,196,0,.14),transparent 36%),linear-gradient(145deg,#15251f,#091419)}.landmarkemoji{width:48px;height:48px;margin-bottom:12px;display:grid;place-items:center;border:1px solid #2c444c;border-radius:14px;background:#091419;font-size:26px;filter:grayscale(1);opacity:.45}.collected .landmarkemoji{filter:none;opacity:1;border-color:#786516}.landmarkcard b{display:block;font-size:13px;line-height:1.2}.landmarkcard small{display:block;margin-top:5px;color:var(--muted);font-size:9px;line-height:1.35}.landmarktype{position:absolute;top:11px;right:11px;color:var(--gold);font-size:8px;font-weight:950;letter-spacing:.7px}.landmarkstate{margin-top:10px;color:#6e838a;font-size:9px;font-weight:900}.collected .landmarkstate{color:var(--green)}
 .avatar{width:86px;height:86px;border:2px solid var(--gold);border-radius:50%;display:grid;place-items:center;margin:15px auto 7px;font-size:31px;background:#122229}.center{text-align:center}
 nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:grid;grid-template-columns:repeat(6,1fr);background:rgba(5,12,15,.97);border-top:1px solid var(--line);padding:7px 3px calc(7px + env(safe-area-inset-bottom));z-index:10}nav button{background:none;color:#708187;font-size:9px;padding:4px 0}nav button.active{color:var(--green)}.ico{font-size:18px;display:block;margin-bottom:2px}
 .modal{display:none;position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.72);align-items:flex-end}.modal.show{display:flex}.sheet{width:100%;max-width:430px;margin:auto;background:#091419;border:1px solid var(--line);border-radius:24px 24px 0 0;padding:20px 17px calc(24px + env(safe-area-inset-bottom))}.prices{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.price{padding:11px 5px;text-align:center;border:1px solid var(--line);border-radius:12px}.price.best{border-color:var(--gold)}.price small{display:block;color:var(--muted);font-size:10px}.toast{position:fixed;z-index:40;bottom:88px;left:50%;transform:translate(-50%,140px);width:calc(100% - 30px);max-width:400px;background:#10252b;border:1px solid #2d5059;border-radius:13px;padding:12px;text-align:center;transition:.25s}.toast.show{transform:translate(-50%,0)}
@@ -37,6 +38,7 @@ nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-w
 .locatebtn{position:absolute;right:10px;top:10px;z-index:600;width:36px;height:36px;padding:0;border:1px solid var(--line);border-radius:11px;background:rgba(4,10,12,.92);color:#fff;font-size:22px;line-height:36px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
 .locatebtn:active{transform:scale(.94)}
 .leaflet-control-zoom a{background:#071014!important;color:#fff!important;border-color:#20363d!important}.leaflet-control-attribution{font-size:8px!important;background:rgba(255,255,255,.8)!important}.leaflet-container{font-family:inherit}.userdot{width:18px;height:18px;border:3px solid #fff;border-radius:50%;background:#1688ff;box-shadow:0 0 0 2px #1688ff,0 2px 9px rgba(0,0,0,.55)}
+.landmarkpin{width:30px;height:30px;display:grid;place-items:center;border:2px solid #ffc400;border-radius:10px;background:#071014;font-size:16px;box-shadow:0 2px 9px rgba(0,0,0,.45)}.landmarkpin.lockedpin{filter:grayscale(1);opacity:.72;border-color:#738188}
 
 </style>
 
@@ -92,13 +94,22 @@ nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-w
 <div class="item"><div class="row"><b>England</b><b>26.1%</b></div><div class="mini"><i style="width:26.1%"></i></div></div><div class="item"><div class="row"><b>Scotland</b><b>18.4%</b></div><div class="mini"><i style="width:18.4%"></i></div></div><div class="item"><div class="row"><b>Wales</b><b>21.7%</b></div><div class="mini"><i style="width:21.7%"></i></div></div>
 <div class="section">Regions</div><div id="regions"></div></section>
 
-<section id="achievements" class="screen"><h1>Achievements</h1><div class="sub">Turn miles into milestones.</div>
+<section id="achievements" class="screen"><h1>Awards</h1><div class="sub">Turn miles and places into milestones.</div>
+<div class="awardtabs" role="tablist" aria-label="Awards sections"><button id="achievementTab" class="sel" type="button" role="tab" aria-selected="true" onclick="showAwardPanel('achievementPanel')">Achievements</button><button id="landmarkTab" type="button" role="tab" aria-selected="false" onclick="showAwardPanel('landmarkPanel')">Landmarks</button></div>
+<div id="achievementPanel" class="awardpanel active" role="tabpanel">
 <div class="item badge"><div class="badgeicon">🚗</div><div><b>First Drive</b><small>Complete your first road · ✓</small></div></div>
 <div class="item badge"><div class="badgeicon">💯</div><div><b>Century</b><small>Drive 100 unique miles · ✓</small></div></div>
 <div class="item badge"><div class="badgeicon">🗺️</div><div><b>County Collector</b><small>Complete your first county · ✓</small></div></div>
 <div class="item badge locked"><div class="badgeicon">🏆</div><div><b>Halfway There</b><small>Reach 50% Great Britain</small></div></div>
 <div class="item badge locked"><div class="badgeicon">🌄</div><div><b>The Horizon</b><small>Reach 100% Great Britain</small></div></div>
-<div class="item badge"><div class="badgeicon">⭐</div><div><b>Founding Explorer</b><small>Exclusive Lifetime Pro launch badge</small></div></div></section>
+<div class="item badge"><div class="badgeicon">⭐</div><div><b>Founding Explorer</b><small>Exclusive Lifetime Pro launch badge</small></div></div>
+</div>
+<div id="landmarkPanel" class="awardpanel" role="tabpanel">
+  <div class="collectionhero"><div class="sub">LANDMARK COLLECTION</div><div id="collectionCount" class="collectioncount">0 / 12</div><div class="mini"><i id="collectionBar" style="width:0%"></i></div><div class="collectionmeta"><span id="localCount">0 local discoveries</span><span id="iconCount">0 UK icons</span></div></div>
+  <div class="section">Nearby collection</div><div id="localLandmarks" class="landmarkgrid"></div>
+  <div class="section">UK icons</div><div id="nationalLandmarks" class="landmarkgrid"></div>
+  <div class="item"><b>How collecting works</b><small>Visit a landmark with Road Horizon open. When GPS places you within its discovery area, the collectible unlocks and stays in your collection on this device.</small></div>
+</div></section>
 
 <section id="profile" class="screen"><div class="center"><div class="avatar">J</div><h1>JACK</h1><div class="sub">ROAD HORIZON · LEVEL 27</div><p><span class="pill">⭐ FOUNDING EXPLORER</span></p></div>
 <div class="grid"><div class="card"><div class="stat">24.7%</div><div class="label">GB COMPLETE</div></div><div class="card"><div class="stat">612h</div><div class="label">DRIVING TIME</div></div><div class="card"><div class="stat">4,821</div><div class="label">ROADS</div></div><div class="card"><div class="stat">18</div><div class="label">COUNTIES</div></div></div>
@@ -125,18 +136,36 @@ let roadSegments=[], roadGrid=new Map(), roadWays=new Map(), roadLoaded=false;
 let completedSegments=new Set(JSON.parse(localStorage.getItem('rh_bordon_completed_segments')||'[]'));
 let currentDriveSegments=new Set(), currentDriveRoads=new Set();
 const GRID=0.002;
-let liveMap=null,roadLayers=null,userMarker=null,accuracyCircle=null,mapWatchId=null,lastMapPosition=null;
+let liveMap=null,roadLayers=null,landmarkLayers=null,userMarker=null,accuracyCircle=null,mapWatchId=null,lastMapPosition=null;
+const LANDMARKS=[
+  {id:'hogmoor',name:'Hogmoor Inclosure',place:'Whitehill & Bordon',lat:51.11173,lon:-0.878159,radius:260,kind:'local',emoji:'🌲',note:'Historic military heathland with Bronze Age and wartime remains.'},
+  {id:'deadwater',name:'Deadwater Valley',place:'Bordon',lat:51.106898,lon:-0.855866,radius:260,kind:'local',emoji:'🦋',note:'Local nature reserve with woodland, heath and Civil War earthworks.'},
+  {id:'selborne-hanger',name:'Selborne Hanger',place:'Selborne',lat:51.09617,lon:-0.94054,radius:300,kind:'local',emoji:'🌿',note:'The famous Zig-Zag climb and landscape that inspired Gilbert White.'},
+  {id:'waverley-abbey',name:'Waverley Abbey',place:'Near Farnham',lat:51.200114,lon:-0.759131,radius:260,kind:'local',emoji:'🏛️',note:'Ruins of Britain’s first Cistercian monastery, founded in 1128.'},
+  {id:'big-ben',name:'Elizabeth Tower',place:'London',lat:51.5007,lon:-0.1246,radius:180,kind:'icon',emoji:'🕰️',note:'The clock tower known around the world as Big Ben.'},
+  {id:'stonehenge',name:'Stonehenge',place:'Wiltshire',lat:51.1789,lon:-1.8262,radius:300,kind:'icon',emoji:'🪨',note:'Britain’s best-known prehistoric stone circle.'},
+  {id:'angel-north',name:'Angel of the North',place:'Gateshead',lat:54.9141,lon:-1.5895,radius:220,kind:'icon',emoji:'🪽',note:'Antony Gormley’s monumental guardian of the North.'},
+  {id:'edinburgh-castle',name:'Edinburgh Castle',place:'Edinburgh',lat:55.9486,lon:-3.1999,radius:260,kind:'icon',emoji:'🏰',note:'The fortress that dominates Edinburgh’s skyline.'},
+  {id:'giants-causeway',name:"Giant’s Causeway",place:'County Antrim',lat:55.2408,lon:-6.5116,radius:350,kind:'icon',emoji:'⬡',note:'Thousands of interlocking basalt columns on the Antrim coast.'},
+  {id:'caernarfon-castle',name:'Caernarfon Castle',place:'Gwynedd',lat:53.1390,lon:-4.2760,radius:220,kind:'icon',emoji:'🏯',note:'A formidable medieval fortress on the River Seiont.'},
+  {id:'clifton-bridge',name:'Clifton Suspension Bridge',place:'Bristol',lat:51.4545,lon:-2.6276,radius:260,kind:'icon',emoji:'🌉',note:'Brunel’s landmark crossing high above the Avon Gorge.'},
+  {id:'blackpool-tower',name:'Blackpool Tower',place:'Blackpool',lat:53.8159,lon:-3.0552,radius:180,kind:'icon',emoji:'🎡',note:'The unmistakable iron tower on Blackpool’s seafront.'}
+];
+let collectedLandmarks=new Set(JSON.parse(localStorage.getItem('rh_collected_landmarks')||'[]'));
 
 function ensureLiveMap(){
   if(liveMap||!window.L)return liveMap;
   liveMap=L.map('leafletmap',{preferCanvas:true,zoomControl:true}).setView([BORDON.lat,BORDON.lon],14);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(liveMap);
   roadLayers=L.layerGroup().addTo(liveMap);
+  landmarkLayers=L.layerGroup().addTo(liveMap);
+  renderLandmarkMarkers();
   if(roadLoaded)renderRoadMap();
   return liveMap;
 }
 function updateMapLocation(p,centre=false){
   lastMapPosition=p;if(!ensureLiveMap())return;
+  checkLandmarks(p);
   const ll=[p.lat,p.lon],radius=Math.max(1,p.accuracy||1);
   if(!userMarker){
     userMarker=L.marker(ll,{icon:L.divIcon({className:'',html:'<div class="userdot"></div>',iconSize:[18,18],iconAnchor:[9,9]}),zIndexOffset:1000}).addTo(liveMap);
@@ -162,6 +191,34 @@ function stopMapLocation(){if(mapWatchId!==null){navigator.geolocation.clearWatc
 function centreOnUser(){
   startMapLocation();
   if(lastMapPosition)updateMapLocation(lastMapPosition,true);else toast('Finding your location…');
+}
+
+function showAwardPanel(id){
+  const landmarks=id==='landmarkPanel';
+  document.getElementById('achievementPanel').classList.toggle('active',!landmarks);
+  document.getElementById('landmarkPanel').classList.toggle('active',landmarks);
+  achievementTab.classList.toggle('sel',!landmarks);landmarkTab.classList.toggle('sel',landmarks);
+  achievementTab.setAttribute('aria-selected',String(!landmarks));landmarkTab.setAttribute('aria-selected',String(landmarks));
+  if(landmarks)renderLandmarks();
+}
+function landmarkCard(l){
+  const found=collectedLandmarks.has(l.id);
+  return `<article class="landmarkcard ${found?'collected':''}"><span class="landmarktype">${l.kind==='local'?'LOCAL':'UK ICON'}</span><div class="landmarkemoji">${found?l.emoji:'?'}</div><b>${l.name}</b><small>${l.place}<br>${found?l.note:'Visit this place to reveal its story.'}</small><div class="landmarkstate">${found?'✓ COLLECTED':'○ UNDISCOVERED'}</div></article>`;
+}
+function renderLandmarks(){
+  const local=LANDMARKS.filter(l=>l.kind==='local'),icons=LANDMARKS.filter(l=>l.kind==='icon');
+  localLandmarks.innerHTML=local.map(landmarkCard).join('');nationalLandmarks.innerHTML=icons.map(landmarkCard).join('');
+  const localFound=local.filter(l=>collectedLandmarks.has(l.id)).length,iconFound=icons.filter(l=>collectedLandmarks.has(l.id)).length,total=localFound+iconFound;
+  collectionCount.textContent=`${total} / ${LANDMARKS.length}`;collectionBar.style.width=(total/LANDMARKS.length*100)+'%';localCount.textContent=`${localFound} local ${localFound===1?'discovery':'discoveries'}`;iconCount.textContent=`${iconFound} UK ${iconFound===1?'icon':'icons'}`;
+}
+function renderLandmarkMarkers(){
+  if(!landmarkLayers)return;landmarkLayers.clearLayers();
+  LANDMARKS.forEach(l=>{const found=collectedLandmarks.has(l.id);L.marker([l.lat,l.lon],{icon:L.divIcon({className:'',html:`<div class="landmarkpin ${found?'':'lockedpin'}">${found?l.emoji:'?'}</div>`,iconSize:[30,30],iconAnchor:[15,15]})}).bindTooltip(`${l.name} · ${found?'Collected':'Undiscovered'}`).addTo(landmarkLayers)});
+}
+function checkLandmarks(p){
+  const unlocked=[];LANDMARKS.forEach(l=>{if(!collectedLandmarks.has(l.id)&&haversineMeters(p,{lat:l.lat,lon:l.lon})<=l.radius){collectedLandmarks.add(l.id);unlocked.push(l)}});
+  if(!unlocked.length)return;localStorage.setItem('rh_collected_landmarks',JSON.stringify([...collectedLandmarks]));renderLandmarks();renderLandmarkMarkers();
+  const l=unlocked[0];toast(`📍 Landmark collected: ${l.name}${unlocked.length>1?` +${unlocked.length-1} more`:''}`);
 }
 
 function setMode(m){
@@ -345,6 +402,7 @@ async function toggleDrive(){
   }
 }
 window.addEventListener('load',()=>loadRoadNetwork(false));
+window.addEventListener('load',()=>renderLandmarks());
 
 function openPro(){promodal.classList.add('show')}function closePro(){promodal.classList.remove('show')}function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2700)}
 </script>
