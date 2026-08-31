@@ -4,6 +4,25 @@ TEST AREA
 Bordon, Hampshire — approximately 6 km radius around the town centre.
 
 WHAT THIS BUILD DOES
+• Adds all 113 UK county-level areas under Progress with nation filtering.
+• Shows completion percentage, completed/total mileage, completed/total roads and a progress bar.
+• Keeps Bordon’s verified result separate as a pilot, rather than presenting it as Hampshire-wide.
+• Displays areas awaiting national road data honestly at 0.0%.
+• Connects future verified area progress to the matching county awards automatically.
+• Expands Awards to exactly 50 core achievements, including 10% completion steps to 100%.
+• Adds 113 county-level completion awards across all four UK nations.
+• Uses 48 English ceremonial counties, 22 Welsh principal areas,
+  32 Scottish council areas and 11 Northern Irish local-government districts.
+• Adds mobile filters for Core, Completion and County & Area awards.
+• Awards are calculated from verified app data; there is no manual unlock control.
+• Makes every landmark collectible tappable with a concise point-of-interest overview.
+• Shows landmark name, location, significance, discovery status and collection rule.
+• Standardises every landmark GPS discovery boundary to a 100-metre radius.
+• Adds a post-drive journey review with route map, distance, time and match confidence.
+• Requires continued GPS evidence before a road segment receives completion credit.
+• Suppresses one-fix side-road snaps commonly seen while passing junctions.
+• Allows false matches to be removed, but provides no way to add or approve road completion.
+• Adds recent journey reviews to the Progress tab.
 • Adds GPS-discovered landmark collectables to the Awards tab.
 • Starts with four meaningful Bordon-area places and eight major UK icons.
 • Saves collected landmarks on the device and displays them as pins on the map.
