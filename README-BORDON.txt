@@ -4,6 +4,16 @@ TEST AREA
 Bordon, Hampshire — approximately 6 km radius around the town centre.
 
 WHAT THIS BUILD DOES
+• Gives Car and Bike their own verified road-completion layers.
+• Adds Combined, Car and Bike map filters with distinct road colours.
+• Uses green for Car, blue for Bike and gold when a road is completed in both modes.
+• Shows separate Bordon completion percentages and verified mileage for each mode.
+• Keeps Combined as the protected union used by overall progress and achievements.
+• Migrates past journey records into the correct mode when their saved journey mode is known.
+• Retains any older unclassified road credit safely in Combined without guessing its mode.
+• Locks the mode selector while tracking so one journey cannot change mode part-way through.
+• Removes false matches only from the journey’s mode layer while preserving valid credit elsewhere.
+• Removes GPX-import references: road credit cannot be added or imported manually.
 • Adds all 113 UK county-level areas under Progress with nation filtering.
 • Shows completion percentage, completed/total mileage, completed/total roads and a progress bar.
 • Keeps Bordon’s verified result separate as a pilot, rather than presenting it as Hampshire-wide.
@@ -39,7 +49,7 @@ WHAT THIS BUILD DOES
 • Calculates a genuine local completion percentage by segment mileage.
 • Shows the currently matched road name/reference.
 • Counts road ways encountered during the current drive.
-• Car and Bike modes contribute to the same completion.
+• Car and Bike contribute to Combined progress while retaining separate mode records.
 • Preserves Home, Progress, Achievements, Profile, Pro preview and existing device data.
 
 ALPHA NOTES
